@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Handicrafts - Artisan Marketplace</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">
+          <h1>🎨 Shopverse</h1>
+        </div>
+        <div class="nav-links">
+          <a href="#" id="cartToggle" class="btn btn-secondary"
+            >🛒 Cart (<span id="cartCount">0</span>)</a
+          >
+          <span id="userGreeting"></span>
+          <a href="#" onclick="logout()" class="btn btn-danger">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- User Panel -->
+    <div class="user-panel">
+      <div class="container">
+        <!-- Search and Filter -->
+        <div class="search-filter">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search products..."
+            class="search-box"
+          />
+          <select id="categoryFilter" class="filter-select">
+            <option value="">All Categories</option>
+            <option value="Textiles">Textiles</option>
+            <option value="Pottery">Pottery</option>
+            <option value="Crafts">Crafts</option>
+          </select>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+          <!-- Products will be displayed here -->
+        </div>
+
+        <!-- No Products Message -->
+        <div id="noProductsMsg" class="no-products" style="display: none">
+          <p>No products found. Check back later!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+      <div class="cart-header">
+        <h2>Shopping Cart</h2>
+        <span class="close" onclick="toggleCart()">&times;</span>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <!-- Cart items will be displayed here -->
+      </div>
+      <div id="emptyCartMsg" class="empty-cart-msg">
+        <p>Your cart is empty</p>
+      </div>
+      <div class="cart-footer">
+        <div class="cart-summary">
+          <div class="summary-item">
+            <span>Subtotal:</span>
+            <span>Rs: <span id="subtotal">0</span></span>
+          </div>
+          <div class="summary-item">
+            <span>Tax (18%):</span>
+            <span>Rs: <span id="tax">0</span></span>
+          </div>
+          <div class="summary-item total">
+            <span>Total:</span>
+            <span>Rs: <span id="cartTotal">0</span></span>
+          </div>
+        </div>
+        <button
+          class="btn btn-primary btn-block"
+          onclick="checkout()"
+          id="checkoutBtn"
+          disabled
+        >
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal" style="display: none">
+      <div class="modal-content-large">
+        <span class="close" onclick="closeCheckoutModal()">&times;</span>
+        <h2>Complete Your Order</h2>
+        <form id="checkoutForm" class="checkout-form">
+          <!-- Cart Items Review -->
+          <div class="address-form-section">
+            <h3>📦 Order Items</h3>
+            <div class="checkout-items-list" id="checkoutItemsList">
+              <!-- Items will be listed here -->
+            </div>
+          </div>
+
+          <!-- Delivery Address Section -->
+          <div class="address-form-section">
+            <h3>🏠 Delivery Address</h3>
+            <div class="form-group">
+              <label>Full Name:</label>
+              <input type="text" id="checkoutName" required />
+            </div>
+            <div class="form-group">
+              <label>Email:</label>
+              <input type="email" id="checkoutEmail" required />
+            </div>
+            <div class="form-group">
+              <label>Phone Number:</label>
+              <input type="tel" id="checkoutPhone" required />
+            </div>
+            <div class="form-group">
+              <label>Address:</label>
+              <textarea
+                id="checkoutAddress"
+                placeholder="Street address, building, apartment, etc."
+                required
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>City:</label>
+                <input type="text" id="checkoutCity" required />
+              </div>
+              <div class="form-group">
+                <label>Zip Code:</label>
+                <input type="text" id="checkoutZip" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>State/Province:</label>
+              <input type="text" id="checkoutState" required />
+            </div>
+          </div>
+
+          <!-- Payment Information Section -->
+          <div class="address-form-section">
+            <h3>💳 Payment Information</h3>
+            <div class="form-group">
+              <label>Card Number:</label>
+              <input
+                type="text"
+                id="checkoutCard"
+                placeholder="1234 5678 9012 3456"
+                maxlength="19"
+                required
+              />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Expiry Date:</label>
+                <input
+                  type="text"
+                  id="checkoutExpiry"
+                  placeholder="MM/YY"
+                  maxlength="5"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>CVV:</label>
+                <input
+                  type="text"
+                  id="checkoutCVV"
+                  placeholder="123"
+                  maxlength="3"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Summary Section -->
+          <div class="address-form-section">
+            <h3>💰 Order Summary</h3>
+            <div class="order-summary">
+              <div class="summary-item">
+                <span>Subtotal:</span>
+                <span>Rs: <span id="checkoutSubtotal">0</span></span>
+              </div>
+              <div class="summary-item">
+                <span>Tax (18%):</span>
+                <span>Rs: <span id="checkoutTax">0</span></span>
+              </div>
+              <div class="summary-item">
+                <span>Delivery Charges:</span>
+                <span>Rs: <span id="checkoutDelivery">0</span></span>
+              </div>
+              <div class="summary-item total">
+                <span>Total Amount:</span>
+                <span>Rs: <span id="checkoutTotal">0</span></span>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            💳 Complete Payment
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Product Details Modal -->
+    <div id="productDetailsModal" class="modal" style="display: none">
+      <div class="modal-content-large">
+        <span class="close" onclick="closeProductDetailsModal()">&times;</span>
+        <h2>Product Details</h2>
+        <div class="product-details-container">
+          <div class="product-details-image">
+            <img id="detailsImage" src="" alt="Product" />
+          </div>
+          <div class="product-details-info">
+            <h2 id="detailsName"></h2>
+            <p id="detailsDescription"></p>
+            <div class="details-meta">
+              <div class="meta-item">
+                <span class="label">Category:</span>
+                <span class="value" id="detailsCategory"></span>
+              </div>
+              <div class="meta-item">
+                <span class="label">Price:</span>
+                <span class="value price" id="detailsPrice"></span>
+              </div>
+              <div class="meta-item">
+                <span class="label">Stock:</span>
+                <span class="value" id="detailsStock"></span>
+              </div>
+            </div>
+            <div class="quantity-selector">
+              <label>Quantity:</label>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="decreaseQty()">−</button>
+                <input
+                  type="number"
+                  id="detailsQuantity"
+                  value="1"
+                  min="1"
+                  readonly
+                />
+                <button class="qty-btn" onclick="increaseQty()">+</button>
+              </div>
+            </div>
+            <button
+              class="btn btn-primary btn-block"
+              id="addToCartFromDetailsBtn"
+              onclick="addToCartFromDetails()"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="success-icon">✓</div>
+        <h2>Order Placed Successfully!</h2>
+        <p id="successMessage"></p>
+        <button class="btn btn-primary" onclick="closeSuccessModal()">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>About</h3>
+            <p>
+              Shopverse is a platform dedicated to promoting local artisan
+              handicrafts. We connect skilled craftspeople with customers who
+              appreciate authentic, handmade products. Every item tells a story
+              of heritage and traditional craftsmanship.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h3>Contact</h3>
+            <div class="contact-info">
+              <p><strong>📞 Phone:</strong> 03************</p>
+              <p>
+                <strong>📧 Email:</strong>
+                <a href="mailto:Shopverse@gmail.com">Shopverse@gmail.com</a>
+              </p>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#" onclick="logout()">Home</a></li>
+              <li><a href="#" onclick="toggleCart()">Cart</a></li>
+              <li>
+                <a href="#" onclick="alert('Privacy Policy coming soon')"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="alert('Terms & Conditions coming soon')"
+                  >Terms & Conditions</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            &copy; 2025 Shopverse - Local Artisan Handicrafts. All rights
+            reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

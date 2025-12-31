@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artisan Portal - Manage Your Handicrafts</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Admin Navigation -->
+    <nav class="navbar admin-navbar">
+      <div class="container">
+        <div class="logo">
+          <h1>👨‍🎨 Artisan Portal</h1>
+        </div>
+        <div class="nav-links">
+          <span id="adminGreeting"></span>
+          <a href="#" onclick="adminLogout()" class="btn btn-danger">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel">
+      <div class="container">
+        <div class="admin-header">
+          <h2>Manage Products</h2>
+          <button class="btn btn-primary" onclick="showAddProductForm()">
+            + Add New Product
+          </button>
+        </div>
+
+        <!-- Add/Edit Product Form -->
+        <div
+          id="productFormContainer"
+          class="product-form-container"
+          style="display: none"
+        >
+          <h3 id="formTitle">Add New Product</h3>
+          <form id="productForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Product Name:</label>
+                <input type="text" id="productName" required />
+              </div>
+              <div class="form-group">
+                <label>Price:</label>
+                <input
+                  type="number"
+                  id="productPrice"
+                  min="0"
+                  step="0.01"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Category:</label>
+                <select id="productCategory" required>
+                  <option value="">Select Category</option>
+                  <option value="Textiles">Textiles</option>
+                  <option value="Pottery">Pottery</option>
+                  <option value="Crafts">Crafts</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Stock:</label>
+                <input type="number" id="productStock" min="0" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Description:</label>
+              <textarea id="productDescription" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Product Image (URL):</label>
+              <input type="url" id="productImage" required />
+              <small>Enter a URL to a product image</small>
+            </div>
+            <div class="form-buttons">
+              <button type="submit" class="btn btn-primary" id="submitBtn">
+                Add Product
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="cancelForm()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Products Table -->
+        <div class="admin-table-container">
+          <h3>Your Products</h3>
+          <table class="admin-table" id="productsTable">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <!-- Products will be displayed here -->
+            </tbody>
+          </table>
+          <div id="noProductsMsg" class="no-products" style="display: none">
+            <p>
+              No products added yet. Click "Add New Product" to get started!
+            </p>
+          </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="admin-stats">
+          <div class="stat-card">
+            <h4>Total Products</h4>
+            <p id="totalProducts" class="stat-number">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Total Stock</h4>
+            <p id="totalStock" class="stat-number">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Total Value</h4>
+            <p id="totalValue" class="stat-number">₹0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h2>Confirm Delete</h2>
+        <p>Are you sure you want to delete this product?</p>
+        <div class="modal-buttons">
+          <button class="btn btn-danger" onclick="confirmDelete()">
+            Delete
+          </button>
+          <button class="btn btn-secondary" onclick="closeDeleteModal()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
